@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEPI Sales Analytics – Dashboard</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="dashboard-page">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+      <span>SalesBI</span>
+    </div>
+    <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-group-label">Analytics</div>
+    <a href="#" class="nav-item active" data-page="overview">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Sales Overview</span>
+    </a>
+    <a href="#" class="nav-item" data-page="products">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span>Product Analysis</span>
+    </a>
+    <a href="#" class="nav-item" data-page="territory">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <span>Territory Analysis</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="data-coverage-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div>
+        <div class="coverage-title">Data Coverage</div>
+        <div class="coverage-range">May 2011 – May 2014</div>
+      </div>
+    </div>
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      Team Page
+    </a>
+  </div>
+</aside>
+
+<div class="main-wrap">
+
+  <header class="topbar">
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topbar-title" id="pageTitle">Sales Overview</div>
+    <div class="topbar-actions">
+      <button class="btn-icon" id="exportCsvBtn" title="Export to CSV">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Export CSV</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="filter-bar" id="filterBar">
+    <div class="filter-row">
+      <div class="filter-group">
+        <label>Year</label>
+        <select id="filterYear">
+          <option value="">All Years</option>
+          <option value="2011">2011</option>
+          <option value="2012">2012</option>
+          <option value="2013">2013</option>
+          <option value="2014">2014</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Month</label>
+        <select id="filterMonth">
+          <option value="">All Months</option>
+          <option value="1">January</option><option value="2">February</option>
+          <option value="3">March</option><option value="4">April</option>
+          <option value="5">May</option><option value="6">June</option>
+          <option value="7">July</option><option value="8">August</option>
+          <option value="9">September</option><option value="10">October</option>
+          <option value="11">November</option><option value="12">December</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Category</label>
+        <select id="filterCategory">
+          <option value="">All Categories</option>
+          <option value="Bikes">Bikes</option>
+          <option value="Components">Components</option>
+          <option value="Accessories">Accessories</option>
+          <option value="Clothing">Clothing</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Territory</label>
+        <select id="filterTerritory">
+          <option value="">All Territories</option>
+          <option value="Australia">Australia</option>
+          <option value="Canada">Canada</option>
+          <option value="Central">Central</option>
+          <option value="France">France</option>
+          <option value="Germany">Germany</option>
+          <option value="Northwest">Northwest</option>
+          <option value="Southwest">Southwest</option>
+          <option value="United Kingdom">United Kingdom</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Status</label>
+        <select id="filterStatus">
+          <option value="">All Statuses</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Approved">Approved</option>
+          <option value="In process">In Process</option>
+          <option value="Backordered">Backordered</option>
+          <option value="Rejected">Rejected</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+      <button class="btn-reset" id="resetFilters">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Reset
+      </button>
+    </div>
+    <div class="filter-summary" id="filterSummary"></div>
+  </div>
+
+  <div class="page-content" id="pageContent">
+
+    <section class="page" id="page-overview" data-label="Sales Overview">
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Total Revenue</div>
+            <div class="kpi-value" id="kpiRevenue">—</div>
+            <div class="kpi-sub" id="kpiRevenueSub"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Total Orders</div>
+            <div class="kpi-value" id="kpiOrders">—</div>
+            <div class="kpi-sub" id="kpiOrdersSub"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Units Sold</div>
+            <div class="kpi-value" id="kpiUnits">—</div>
+            <div class="kpi-sub" id="kpiUnitsSub"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon purple"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Customers</div>
+            <div class="kpi-value" id="kpiCustomers">—</div>
+            <div class="kpi-sub" id="kpiCustomersSub"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Avg. Order Value</div>
+            <div class="kpi-value" id="kpiAov">—</div>
+            <div class="kpi-sub" id="kpiAovSub"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Products Sold</div>
+            <div class="kpi-value" id="kpiProducts">—</div>
+            <div class="kpi-sub" id="kpiProductsSub"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card span-2">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Sales Trend Over Time</div>
+              <div class="chart-subtitle">Monthly revenue — اتجاه المبيعات الشهري</div>
+            </div>
+          </div>
+          <div class="chart-wrap tall"><canvas id="chartTrend"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Sales by Category</div>
+              <div class="chart-subtitle">المبيعات حسب الفئة</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chartCategory"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Sales by Territory</div>
+              <div class="chart-subtitle">المبيعات حسب المنطقة</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chartTerritory"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Top 10 Products by Revenue</div>
+              <div class="chart-subtitle">أعلى ١٠ منتجات مبيعاً</div>
+            </div>
+          </div>
+          <div class="chart-wrap tall"><canvas id="chartTop10"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Order Status Distribution</div>
+              <div class="chart-subtitle">توزيع حالات الطلبات</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chartStatus"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Annual Sales Comparison</div>
+              <div class="chart-subtitle">مقارنة المبيعات السنوية</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chartYearly"></canvas></div>
+        </div>
+      </div>
+
+      <div class="data-coverage-panel">
+        <div class="coverage-header">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Data Coverage &amp; Limitations</span>
+        </div>
+        <div class="coverage-body">
+          <p>This dashboard is built on a historical sales dataset covering <strong>May 2011 through May 2014</strong> (23,603 order-line records across 1,465 unique orders). The dataset does not span a fully continuous date range — certain months within this period contain no transactions. These gaps reflect the original data as recorded and have not been filled with synthetic or estimated values. Time-based trend charts display only months for which actual data exists; missing periods are not interpolated. Year-over-year comparisons may be affected because 2011 and 2014 contain only partial-year data.</p>
+          <p class="arabic-note" dir="rtl">تغطي هذه البيانات الفترة من مايو ٢٠١١ حتى مايو ٢٠١٤، وتحتوي على ٢٣٬٦٠٣ سطر بيانات موزعة على ١٤٦٥ طلباً فريداً. لا تُمثل البيانات نطاقاً زمنياً متواصلاً، إذ تخلو بعض الأشهر من أي معاملات مسجلة. هذه الفجوات تعكس البيانات الأصلية كما هي دون ملء اصطناعي، مما قد يؤثر على مقارنات الاتجاه الزمني.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="page hidden" id="page-products" data-label="Product Analysis">
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Total Products</div>
+            <div class="kpi-value" id="kpiTotalProducts">—</div>
+            <div class="kpi-sub" id="kpiTotalProductsSub"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Best Revenue Product</div>
+            <div class="kpi-value small" id="kpiBestProduct">—</div>
+            <div class="kpi-sub" id="kpiBestProductSub"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Total Units Sold</div>
+            <div class="kpi-value" id="kpiProdUnits">—</div>
+            <div class="kpi-sub" id="kpiProdUnitsSub"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Subcategories</div>
+            <div class="kpi-value" id="kpiSubcats">—</div>
+            <div class="kpi-sub" id="kpiSubcatsSub"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Revenue by Category</div>
+              <div class="chart-subtitle">الإيرادات حسب الفئة</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chartProdCategory"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Units by Subcategory</div>
+              <div class="chart-subtitle">الكميات حسب الفئة الفرعية</div>
+            </div>
+          </div>
+          <div class="chart-wrap tall"><canvas id="chartSubcat"></canvas></div>
+        </div>
+
+        <div class="chart-card span-2">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Top 10 Products by Revenue</div>
+              <div class="chart-subtitle">أعلى ١٠ منتجات من حيث الإيرادات</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chartProdTop10"></canvas></div>
+        </div>
+
+        <div class="chart-card span-2">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Bottom 10 Products by Revenue</div>
+              <div class="chart-subtitle">أدنى ١٠ منتجات من حيث الإيرادات</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chartProdBottom10"></canvas></div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-toolbar">
+          <div class="table-title-wrap">
+            <div class="chart-title">Product Performance Table</div>
+            <div class="chart-subtitle">جدول أداء المنتجات</div>
+          </div>
+          <input type="text" id="productSearch" class="search-input" placeholder="Search products…">
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="productTable">
+            <thead>
+              <tr>
+                <th data-col="product" class="sortable">Product <span class="sort-icon">↕</span></th>
+                <th data-col="category" class="sortable">Category <span class="sort-icon">↕</span></th>
+                <th data-col="subCategory" class="sortable">Subcategory <span class="sort-icon">↕</span></th>
+                <th data-col="qty" class="sortable num">Units <span class="sort-icon">↕</span></th>
+                <th data-col="revenue" class="sortable num">Revenue <span class="sort-icon">↕</span></th>
+                <th data-col="orders" class="sortable num">Orders <span class="sort-icon">↕</span></th>
+                <th data-col="avgPrice" class="sortable num">Avg. Price <span class="sort-icon">↕</span></th>
+              </tr>
+            </thead>
+            <tbody id="productTableBody"></tbody>
+          </table>
+        </div>
+        <div class="table-pagination">
+          <div class="pagination-info" id="prodPagInfo"></div>
+          <div class="pagination-controls">
+            <button id="prodPrevBtn" class="btn-page">← Prev</button>
+            <span id="prodPageNum"></span>
+            <button id="prodNextBtn" class="btn-page">Next →</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="page hidden" id="page-territory" data-label="Territory Analysis">
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Territories</div>
+            <div class="kpi-value" id="kpiTerritories">—</div>
+            <div class="kpi-sub" id="kpiTerritoriesSub"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Top Territory</div>
+            <div class="kpi-value small" id="kpiTopTerritory">—</div>
+            <div class="kpi-sub" id="kpiTopTerritorySub"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Territory Groups</div>
+            <div class="kpi-value" id="kpiGroups">—</div>
+            <div class="kpi-sub" id="kpiGroupsSub"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Avg Revenue / Territory</div>
+            <div class="kpi-value" id="kpiAvgTerritory">—</div>
+            <div class="kpi-sub" id="kpiAvgTerritorySub"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card span-2">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Revenue by Territory</div>
+              <div class="chart-subtitle">الإيرادات حسب المنطقة الجغرافية</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chartTerritoryBar"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Sales Share by Territory Group</div>
+              <div class="chart-subtitle">الحصة حسب المجموعة الإقليمية</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chartTerritoryGroup"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Orders by Territory</div>
+              <div class="chart-subtitle">الطلبات حسب المنطقة</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chartTerritoryOrders"></canvas></div>
+        </div>
+
+        <div class="chart-card span-2">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Territory Performance: Revenue vs. Orders</div>
+              <div class="chart-subtitle">مقارنة الإيرادات والطلبات حسب المنطقة</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chartTerritoryBubble"></canvas></div>
+        </div>
+      </div>
+
+      <div class="territory-table-wrap">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <div class="chart-title">Territory Summary Table</div>
+              <div class="chart-subtitle">ملخص أداء المناطق</div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table" id="territoryTable">
+              <thead>
+                <tr>
+                  <th>Territory</th>
+                  <th>Group</th>
+                  <th class="num">Revenue</th>
+                  <th class="num">Orders</th>
+                  <th class="num">Units</th>
+                  <th class="num">Avg. Order Value</th>
+                  <th class="num">Revenue Share</th>
+                </tr>
+              </thead>
+              <tbody id="territoryTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading Sales Data…</div>
+  </div>
+</div>
+
+<script src="sales_2011.js"></script>
+<script src="sales_2012.js"></script>
+<script src="sales_2013.js"></script>
+<script src="sales_2014.js"></script>
+<script src="js/data.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/tables.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

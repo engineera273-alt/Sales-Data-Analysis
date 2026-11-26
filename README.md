@@ -106,13 +106,15 @@ The repository is organized into the following folders:
 
 ```text
 Sales Data Analysis/
-Sales Data Analysis/
 │
 ├── 📁 Excel/
 │   └── Excel Analysis Files
 │
 ├── 📁 Power Bi/
 │   └── Power BI Dashboards
+│
+├── 📁 Presentation/
+│   └── Project Presentation Slides
 │
 ├── 📁 Python/
 │   └── Python Analysis & Notebooks
@@ -135,11 +137,11 @@ Sales Data Analysis/
 |---|---|
 | [Excel](./Excel/) | Excel data analysis and reports |
 | [Power Bi](./Power%20Bi/) | Interactive Power BI dashboards |
+| [Presentation](./Presentation/) | Project presentation slides |
 | [Python](./Python/) | Data analysis using Python |
 | [Report-sales-analysis](./Report-sales-analysis/) | Project documentation and final report |
 | [Sql](./Sql/) | SQL queries and database analysis |
 | [Web](./Web/) | Project website and web development files |
-
 ---
 
 <p align="center">

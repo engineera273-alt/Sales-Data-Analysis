@@ -33,7 +33,7 @@ The project focuses on identifying sales trends, evaluating product and regional
 | # | Team Member | Position |
 |---|---|---|
 | 1 | Eng. Mariam Ramadan Zaky | Team Member |
-| 2 | Eng. Doaa Hesham | Team Member |
+| 2 | Eng. Doaa Hisham | Team Member |
 | 3 | Eng. Sama Said Attia | Team Member |
 | 4 | Eng. Mohamed Hosny | Team Member |
 | 5 | Eng. Elsayed Mohamed Elsayed | Team Member |
@@ -61,7 +61,7 @@ The project focuses on identifying sales trends, evaluating product and regional
 - **Mohamed Hosny:** Power BI Page 1 and SQL Analysis.
 - **Elsayed Mohamed Elsayed:** Power BI Page 2 and Python Analysis.
 - **Mariam Ramadan Zaky:** Power BI Page 2 and Python Analysis.
-- **Doaa Hesham:** Power BI Page 3 and Excel Analysis.
+- **Doaa Hisham:** Power BI Page 3 and Excel Analysis.
 - **Sama Said Attia:** Power BI Page 3 and Excel Analysis.
 
 All team members collaborate to complete their assigned tasks and contribute to the successful delivery of the project.
